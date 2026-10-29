@@ -1,0 +1,3 @@
+modele,rmse,score,anticipation,fausses
+sans post-traitement,23.93,1802.0,0.818,0.0
+avec post-traitement,25.1,1826.0,1.0,0.0
