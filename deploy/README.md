@@ -8,6 +8,7 @@ plus a self-contained Python 3.11 virtual environment and a minimal smoke test.
 | File | Purpose |
 |---|---|
 | `jalon4_final.keras` | Keras archive converted from `../models/jalon4_final.keras.zip` |
+| `streamlit_app.py` | Streamlit interface: pick a pump, get its RUL |
 | `requirements.txt` | Pinned Python dependencies (CPU-only TensorFlow) |
 | `.venv/` | Python 3.11 virtual environment with the requirements installed |
 | `load_model.py` | Loads the model and runs a dummy prediction |
@@ -28,6 +29,31 @@ The post-processing rule from the notebook (`RUL < 45` and `HI > 2` → force
 if needed.
 
 ## Use the existing environment
+
+### Interface (recommended)
+
+```bash
+cd deploy
+.venv/bin/streamlit run streamlit_app.py
+```
+
+Then open <http://localhost:8501>. Pick a pump in the sidebar and the app shows:
+
+- the predicted **RUL in cycles** for the last observed cycle, with a status badge;
+- the health indicator (HI) and the number of observed cycles;
+- a chart of the predicted RUL and the HI along the pump's history;
+- the last 10 cycles and a CSV export.
+
+The *Validation* split has known RUL, so the chart also shows the true RUL for
+comparison. The *Test* split is the realistic case: truncated histories, no label.
+The sidebar toggle applies the notebook's business rule (`RUL < 45` and `HI > 2`
+→ force `29` cycles).
+
+The app needs `deploy/jalon4_final.keras`, `../models/jalon2_autoencodeur.keras`
+and `../data/uc5_flotteA.npz`. If you move `deploy/` elsewhere, copy those two
+files next to it (in `models/` and `data/`).
+
+### Smoke test
 
 ```bash
 cd deploy
